@@ -26,7 +26,7 @@ jobs:
           docker build -t local/trivy-scanner-test:${{ github.sha }} .
 
       - name: Trivy scan (fail on HIGH/CRITICAL)
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.33.0
         with:
           image-ref: local/trivy-scanner-test:${{ github.sha }}
           format: 'table'
@@ -37,7 +37,7 @@ jobs:
 
       - name: Trivy scan (SARIF)
         if: always()
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.33.0
         with:
           image-ref: local/trivy-scanner-test:${{ github.sha }}
           format: 'sarif'
