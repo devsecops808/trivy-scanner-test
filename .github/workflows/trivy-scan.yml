@@ -26,7 +26,7 @@ jobs:
           docker build -t local/trivy-scanner-test:${{ github.sha }} .
 
       - name: Trivy scan (audit mode - show all vulnerabilities)
-        uses: aquasecurity/trivy-action@0.33.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'image'
           image-ref: local/trivy-scanner-test:${{ github.sha }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: Trivy scan (SARIF)
         if: always()
-        uses: aquasecurity/trivy-action@0.33.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'image'
           image-ref: local/trivy-scanner-test:${{ github.sha }}
@@ -50,7 +50,7 @@ jobs:
 
       - name: Trivy scan (JSON)
         if: always()
-        uses: aquasecurity/trivy-action@0.33.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'image'
           image-ref: local/trivy-scanner-test:${{ github.sha }}
