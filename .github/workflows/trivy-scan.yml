@@ -48,6 +48,40 @@ jobs:
           vuln-type: 'os,library'
           severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
+      - name: Trivy scan (JSON)
+        if: always()
+        uses: aquasecurity/trivy-action@0.33.0
+        with:
+          scan-type: 'image'
+          image-ref: local/trivy-scanner-test:${{ github.sha }}
+          format: 'json'
+          output: 'trivy-results.json'
+          ignore-unfixed: false
+          vuln-type: 'os,library'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+
+      - name: Trivy scan (CSV - using template)
+        if: always()
+        run: |
+          trivy image \
+            --format template \
+            --template "@contrib/csv.tpl" \
+            --output trivy-results.csv \
+            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL \
+            --vuln-type os,library \
+            local/trivy-scanner-test:${{ github.sha }}
+
+      - name: Upload Trivy reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-reports
+          path: |
+            trivy-results.sarif
+            trivy-results.json
+            trivy-results.csv
+          retention-days: 30
+
       - name: Upload SARIF to code scanning
         if: always()
         uses: github/codeql-action/upload-sarif@v3
