@@ -60,16 +60,12 @@ jobs:
           vuln-type: 'os,library'
           severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
-      - name: Trivy scan (CSV - using template)
+      - name: Convert JSON to CSV
         if: always()
         run: |
-          trivy image \
-            --format template \
-            --template "@contrib/csv.tpl" \
-            --output trivy-results.csv \
-            --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL \
-            --vuln-type os,library \
-            local/trivy-scanner-test:${{ github.sha }}
+          # Create CSV from JSON results
+          echo "Package,Vulnerability ID,Severity,Installed Version,Fixed Version,Title" > trivy-results.csv
+          jq -r '.Results[]?.Vulnerabilities[]? | [.PkgName, .VulnerabilityID, .Severity, .InstalledVersion, .FixedVersion, .Title] | @csv' trivy-results.json >> trivy-results.csv || echo "No vulnerabilities to convert" >> trivy-results.csv
 
       - name: Upload Trivy reports as artifacts
         if: always()
