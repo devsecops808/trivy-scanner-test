@@ -25,15 +25,15 @@ jobs:
         run: |
           docker build -t local/trivy-scanner-test:${{ github.sha }} .
 
-      - name: Trivy scan (fail on HIGH/CRITICAL)
+      - name: Trivy scan (audit mode - show all vulnerabilities)
         uses: aquasecurity/trivy-action@0.33.0
         with:
           image-ref: local/trivy-scanner-test:${{ github.sha }}
           format: 'table'
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: false
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
       - name: Trivy scan (SARIF)
         if: always()
@@ -44,6 +44,7 @@ jobs:
           output: 'trivy-results.sarif'
           ignore-unfixed: false
           vuln-type: 'os,library'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
 
       - name: Upload SARIF to code scanning
         if: always()

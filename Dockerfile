@@ -1,5 +1,5 @@
-# Use old Ubuntu with known vulnerabilities
-FROM ubuntu:18.04
+# Use Debian Bullseye with known vulnerabilities
+FROM debian:bullseye
 
 # Add packages that commonly have vulnerabilities
 RUN apt-get update \
@@ -7,9 +7,9 @@ RUN apt-get update \
        curl \
        wget \
        openssl \
-       libssl1.0.0 \
-       python2.7 \
-       python-pip \
+       nginx \
+       python3 \
+       git \
     && apt-get clean
 
 # Add a tiny script so the image has some content
