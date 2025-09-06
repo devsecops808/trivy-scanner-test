@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Add a tiny script so the image has some content
 COPY app.sh /usr/local/bin/app.sh
