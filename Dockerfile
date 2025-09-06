@@ -1,10 +1,10 @@
 # Use old Node.js version with known vulnerabilities
 FROM node:14
 
-# Add vulnerable Ubuntu packages
+# Add packages (don't specify versions - let it install whatever is available)
 RUN apt-get update \
     && apt-get install -y \
-       nginx=1.18.0-0ubuntu1 \
+       nginx \
        curl \
        wget \
        openssl \
